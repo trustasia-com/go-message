@@ -1,6 +1,6 @@
-module github.com/emersion/go-message
+module github.com/trustasia-com/go-message
 
-go 1.14
+go 1.17
 
 require (
 	github.com/emersion/go-textwrapper v0.0.0-20200911093747-65d896831594
