@@ -13,7 +13,8 @@ import (
 // An Entity is either a whole message or a one of the parts in the body of a
 // multipart entity.
 type Entity struct {
-	Header Header    // The entity's header.
+	Header Header // The entity's header.
+	Raw    io.Reader
 	Body   io.Reader // The decoded entity's body.
 
 	mediaType   string
@@ -31,6 +32,7 @@ func New(header Header, body io.Reader) (*Entity, error) {
 
 	mediaType, mediaParams, _ := header.ContentType()
 
+	old := body
 	// QUIRK: RFC 2045 section 6.4 specifies that multipart messages can't have
 	// a Content-Transfer-Encoding other than "7bit", "8bit" or "binary".
 	// However some messages in the wild are non-conformant and have it set to
@@ -58,6 +60,7 @@ func New(header Header, body io.Reader) (*Entity, error) {
 
 	return &Entity{
 		Header:      header,
+		Raw:         old,
 		Body:        body,
 		mediaType:   mediaType,
 		mediaParams: mediaParams,
