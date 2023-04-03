@@ -73,11 +73,6 @@ func CreateWriter(w io.Writer, header Header) (*Writer, error) {
 	// ensure that modifications are invisible to the caller
 	header = header.Copy()
 
-	// If the message uses MIME, it has to include MIME-Version
-	if !header.Has("Mime-Version") {
-		header.Set("MIME-Version", "1.0")
-	}
-
 	ww, err := createWriter(w, &header)
 	if err != nil {
 		return nil, err
